@@ -40,8 +40,7 @@ def createTable(_conn):
                     c_name char(25) PRIMARY KEY not null,
                     c_phone varchar(25) not null,
                     c_age INTEGER not null,
-                    c_citykey INTEGER not null,
-                    c_destination varchar(25) not null
+                    c_citykey INTEGER not null
                 );
                 CREATE TABLE Application (
                     customer_name char(25) not null,
@@ -60,8 +59,6 @@ def createTable(_conn):
                 );
                 CREATE TABLE FastFood (
                     ff_name char(25) not null,
-                    ff_address varchar(50) not null,
-                    ff_phone varchar(25) not null,
                     ff_citykey INTEGER not null,
                     ff_key INTEGER PRIMARY KEY not null,
                     ff_statekey INTEGER not null
@@ -75,8 +72,6 @@ def createTable(_conn):
                 CREATE TABLE Restaurant(
                     r_name char(25) not null,
                     r_statekey INTEGER not null,
-                    r_phone varchar(25) not null,
-                    r_address varchar(50) not null,
                     r_key INTEGER PRIMARY KEY not null,
                     r_citykey INTEGER not null
                 );
@@ -88,10 +83,9 @@ def createTable(_conn):
                 );
                 CREATE TABLE StreetFood(
                     sf_name char(25) not null,
-                    sf_phone varchar(25) not null,
                     sf_citykey INTEGER not null,
                     sf_key INTEGER PRIMARY KEY not null,
-                    sf_address varchar(50) not null
+                    sf_statekey INTEGER not null
                 );
                 CREATE TABLE StreetFood_City(
                     city_citykey INTEGER not null,
@@ -139,10 +133,93 @@ def dropTable(_conn):
         _conn.executescript(sql)
 
         _conn.commit()
+        print("Successfully dropped tables")
     except Error as e:
         _conn.rollback()
         print(e)
     print("++++++++++++++++++++++++++++++++++")
+
+
+def populateTables(_conn):
+    print("++++++++++++++++++++++++++++++++++")
+    print("Populate tables")
+    try:
+        sql = """
+        INSERT INTO Consumer(c_name,c_phone,c_age,c_citykey)
+        VALUES ("Henry", "209-123-4567",21,1),
+            ("Blake", "209-321-7654",22,2),
+            ("James", "209-121-1654",23,3),
+            ("John", "209-321-1754",20,4),
+            ("Adam", "209-345-1664",24,5),
+            ("Arianna", "209-235-6764",21,6),
+            ("Rebecca", "209-785-6234",23,7),
+            ("Mary", "209-955-6454",45,8),
+            ("George", "209-376-3354",50,9),
+            ("Victor", "209-745-8903",35,10);
+
+        INSERT INTO City(city_key,city_name,city_statekey)
+        VALUES(1,"San Francisco", 1),
+            (2,"Merced", 1),
+            (3,"Stockton", 1),
+            (4,"Sacramento", 1),
+            (5,"Los Angelas", 1);
+
+        INSERT INTO State(s_statekey,s_name)
+        VALUES(1,"California");
+
+        INSERT INTO FastFood(ff_name,ff_citykey,ff_key,ff_statekey)
+        VALUES("Wendy's",1,1,1),
+            ("Taco Bell",2,2,1),
+            ("Chick-fil-A",3,3,1),
+            ("Starbucks",4,4,1),
+            ("McDonald's",5,5,1);
+
+        INSERT INTO FastFood_City(city_citykey,fastfood_citykey)
+        VALUES(1,1),
+            (2,2),
+            (3,3),
+            (4,4),
+            (5,5);
+
+        INSERT INTO Restaurant(r_name,r_citykey,r_key,r_statekey)
+        VALUES("Applebee's",1,1,1),
+            ("Olive Garden",2,2,1),
+            ("Buffalo Wild Wings",3,3,1),
+            ("IHOP",4,4,1),
+            ("Red Lobster",5,5,1);
+
+        INSERT INTO Restaurant_City(city_citykey,rest_citykey)
+        VALUES(1,1),
+            (2,2),
+            (3,3),
+            (4,4),
+            (5,5);
+
+        INSERT INTO StreetFood(sf_name,sf_citykey,sf_key,sf_statekey)
+        VALUES ("Soma Street Food Park",1,1,1),
+            ("El Fuego",2,2,1),
+            ("Korean Street Food",3,3,1),
+            ("Tacos Las Ranitas",4,4,1),
+            ("The Papaya Lady",5,5,1);
+
+        INSERT INTO StreetFood_City(city_citykey,streetfood_citykey)
+        VALUES(1,1),
+            (2,2),
+            (3,3),
+            (4,4),
+            (5,5);
+
+        INSERT INTO Application(customer_name,fastfood_key,restaurant_key,streetfood_key)
+            VALUES("Henry",1,1,1);
+            
+        """
+        _conn.executescript(sql)
+
+        _conn.commit()
+        print("Successfully populated tables")
+    except Error as e:
+        _conn.rollback()
+        print(e)
 
 
 def main():
@@ -152,8 +229,9 @@ def main():
     # conn = sqlite3.connect(_dbFile)
     conn = openConnection(_dbFile)
     with conn:
+        dropTable(conn)
         createTable(conn)
-        # dropTable(conn)
+        populateTables(conn)
 
     closeConnection(conn, _dbFile)
 
