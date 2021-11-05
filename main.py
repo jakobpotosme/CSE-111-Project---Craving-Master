@@ -98,8 +98,8 @@ def createTable(_conn):
                     s_name char(25) not null
                 );
                 CREATE TABLE Favorites(
+                    f_key INTEGER PRIMARY KEY not null,
                     f_name char(25) not null
-
                 );
 
                 """
@@ -222,6 +222,41 @@ def populateTables(_conn):
         print(e)
 
 
+def modifyTables(_conn):
+    print("++++++++++++++++++++++++++++++++++")
+    print("Modify tables")
+    try:
+        sql = """
+        INSERT INTO Favorites(f_key,f_name)
+        VALUES(1,"Starbucks"),
+            (2,"McDonald's"),
+            (3,"Olive Garden"),
+            (4,"IHOP"),
+            (5,"El Fuego");
+
+        UPDATE Favorites
+        SET f_name = Fast.newFavorite
+        FROM (SELECT ff_name as newFavorite,ff_key
+            FROM FastFood 
+            WHERE ff_name = "Wendy's"
+            AND  ff_key = 1) as Fast
+        WHERE Favorites.f_key = Fast.ff_key;
+        
+        DELETE FROM Favorites WHERE f_key = 4;
+        DELETE FROM Favorites WHERE f_key = 5;
+        
+        
+
+        """
+        # IDEA: Maybe just have top 3, and allow user to update their top 3 as they please
+        _conn.executescript(sql)
+        _conn.commit()
+        print("Successfully Modified Table")
+    except Error as e:
+        _conn.rollback()
+        print(e)
+
+
 def main():
     _dbFile = r"project.db"
 
@@ -232,6 +267,7 @@ def main():
         dropTable(conn)
         createTable(conn)
         populateTables(conn)
+        modifyTables(conn)
 
     closeConnection(conn, _dbFile)
 
