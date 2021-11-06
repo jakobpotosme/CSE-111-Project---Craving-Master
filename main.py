@@ -222,9 +222,9 @@ def populateTables(_conn):
         print(e)
 
 
-def modifyTables(_conn):
+def modifyFavoriteTable(_conn):
     print("++++++++++++++++++++++++++++++++++")
-    print("Modify tables")
+    print("Modify Favorite Table")
     try:
         sql = """
         INSERT INTO Favorites(f_key,f_name)
@@ -257,6 +257,35 @@ def modifyTables(_conn):
         print(e)
 
 
+def relevantCities(_conn):
+    print("++++++++++++++++++++++++++++++++++")
+    print("Find Relevant Cities")
+    try:
+        sql = """
+        SELECT city_name,ff_name,r_name,sf_name
+        FROM City
+        INNER JOIN FastFood ON FastFood.ff_citykey = City.city_key
+        INNER JOIN Restaurant ON Restaurant.r_citykey = City.city_key
+        INNER JOIN StreetFood ON StreetFood.sf_citykey = City.city_key
+        """
+        cur = _conn.cursor()
+        cur.execute(sql)
+        # print("Successfully found relevant cities ")
+        l = '{:<10} {:<10} {:<10} {:<10}\n'.format(
+            "city", "fastfood", "restaurant", "streetfood")
+        print(l)
+
+        rows = cur.fetchall()
+        for row in rows:
+            l = '{:<10} {:<10} {:<10} {:<10}\n'.format(
+                row[0], row[1], row[2], row[3])
+            print(l)
+
+    except Error as e:
+        _conn.rollback()
+        print(e)
+
+
 def main():
     _dbFile = r"project.db"
 
@@ -267,7 +296,8 @@ def main():
         dropTable(conn)
         createTable(conn)
         populateTables(conn)
-        modifyTables(conn)
+        modifyFavoriteTable(conn)
+        relevantCities(conn)
 
     closeConnection(conn, _dbFile)
 
