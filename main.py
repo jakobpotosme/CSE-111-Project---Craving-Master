@@ -419,25 +419,26 @@ def estabSelect(_conn):
         selctedCity = 2
 
         sql = """
-            SELECT city_name,sf_name,r_name,ff_name
+            SELECT s_name,city_name,sf_name,r_name,ff_name
             FROM City
             INNER JOIN FastFood ON FastFood.ff_citykey = City.city_key
             INNER JOIN Restaurant ON Restaurant.r_citykey = City.city_key
             INNER JOIN StreetFood ON StreetFood.sf_citykey = City.city_key
+            INNER JOIN State ON State.s_statekey = City.city_statekey
             WHERE city_key = ?
         """
         args = [selctedCity]
         cur = _conn.cursor()
         cur.execute(sql, args)
 
-        l = '{:<10} {:<10} {:<10} {:<10}\n'.format("city",
-                                                   "streetfood", "restaurant", "fastfood")
+        l = '{:<10} {:<10} {:<10} {:<10} {:<10}\n'.format("state", "city",
+                                                          "streetfood", "restaurant", "fastfood")
         print(l)
 
         rows = cur.fetchall()
         for row in rows:
-            l = '{:<10} {:<10} {:<10} {:<10}\n'.format(
-                row[0], row[1], row[2], row[3])
+            l = '{:<10} {:<10} {:<10} {:<10} {:<10}\n'.format(
+                row[0], row[1], row[2], row[3], row[4])
             print(l)
 
         # sql = """
@@ -467,11 +468,11 @@ def main():
         # relevantCities(conn)
         # userRegistration(conn)
         # userCityInput(conn)
+        # estabSelect(conn)
 
+        #
         # relevantEstablishments(conn)
         # userConInput(conn)
-        # userCityInput(conn)
-        estabSelect(conn)
 
     closeConnection(conn, _dbFile)
 
