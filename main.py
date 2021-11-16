@@ -274,7 +274,7 @@ def relevantCities(_conn):
         l = '{:<10} {:<10} {:<10} {:<10}\n'.format(
             "city", "fastfood", "restaurant", "streetfood")
         print(l)
-
+# test
         rows = cur.fetchall()
         for row in rows:
             l = '{:<10} {:<10} {:<10} {:<10}\n'.format(
