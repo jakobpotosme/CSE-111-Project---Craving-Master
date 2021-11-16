@@ -285,7 +285,9 @@ def relevantCities(_conn):
         _conn.rollback()
         print(e)
 
-#WIP
+# WIP
+
+
 def relevantEstablishments(_conn):
     print("++++++++++++++++++++++++++++++++++")
     print("Find Relevant Establishments")
@@ -311,13 +313,14 @@ def relevantEstablishments(_conn):
         _conn.rollback()
         print(e)
 
+
 def userConInput(_conn):
     # INSERT INTO Consumer(c_name,c_phone,c_age,c_citykey)
     print("++++++++++++++++++++++++++++++++++")
     print("inputting data")
     try:
         cursor = _conn.cursor()
-        f = open('userConIn.txt','r')
+        f = open('userConIn.txt', 'r')
 
         name = f.readline()
         name = name.strip("\n")
@@ -326,13 +329,12 @@ def userConInput(_conn):
         age = f.readline()
         age = age.strip("\n")
 
-
-        args = [str(name),str(phone),int(age)]
+        args = [str(name), str(phone), int(age)]
 
         sql = """
         INSERT INTO Consumer VALUES (?, ? , ?, NULL)
         """
-        cursor.execute(sql,args)
+        cursor.execute(sql, args)
         _conn.commit()
 
     except Error as e:
@@ -347,13 +349,13 @@ def userConInput(_conn):
 #         cursor = _conn.cursor()
 #         f = open('userCityIn.txt','r')
 
+
 def estabSelect(_conn):
     print("++++++++++++++++++++++++++++++++++")
     print("inputting data")
-    try:   
+    try:
         cursor = _conn.cursor()
-        
-        
+
         sql = """
         SELECT @place 
         FROM Fastfood, Restaurant, Streetfood
@@ -368,7 +370,6 @@ def estabSelect(_conn):
         _conn.rollback()
         print("selecting establishment failed")
 
-def
 
 def main():
     _dbFile = r"project.db"
@@ -380,8 +381,9 @@ def main():
         dropTable(conn)
         createTable(conn)
         populateTables(conn)
-        modifyFavoriteTable(conn)
-        relevantCities(conn)
+        # modifyFavoriteTable(conn)
+        # relevantCities(conn)
+        relevantEstablishments(conn)
 
     closeConnection(conn, _dbFile)
 
