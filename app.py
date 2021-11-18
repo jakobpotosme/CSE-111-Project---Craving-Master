@@ -1,18 +1,27 @@
 from flask import Flask, request, url_for, redirect
 from flask.templating import render_template
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import current_user, login_user, LoginManager, UserMixin, logout_user, login_required
+
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///example.sqlite"
 db = SQLAlchemy(app)
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+app.secret_key = 'keep it secret, keep it safe'
 
-# user = Consumer(name='john', phone='209-111-1234', age=23, citykey=2)
-# db.session.add(user)
-# db.session.commit()
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(int(user_id))
+
+# users is now the old consumer table
 
 
-class Users(db.Model):
+class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, unique=False, nullable=False)
@@ -21,8 +30,14 @@ class Users(db.Model):
     age = db.Column(db.Integer, unique=False, nullable=False)
     city = db.Column(db.Integer, unique=False, nullable=False)
 
+    def check_password(self, password):
+        return self.password == password
+
 
 db.create_all()
+# user = Consumer(name='john', phone='209-111-1234', age=23, citykey=2)
+# db.session.add(user)
+# db.session.commit()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -39,10 +54,10 @@ def login():
         user = Users.query.filter_by(username=username).filter_by(
             password=password).first()
 
-        if user is None:
+        if user is None or user.check_password(password) is None:
             return redirect(url_for('login'))
         else:
-
+            login_user(user)
             return redirect(url_for('homepage'))
 
     return render_template('login.html')
@@ -67,6 +82,7 @@ def register():
 
 
 @app.route('/home', methods=['GET', 'POST'])
+@login_required
 def homepage():
 
     return render_template('home.html')
@@ -80,6 +96,13 @@ def favorites():
 @app.route('/list', methods=['GET', 'POST'])
 def list():
     return render_template('list.html')
+
+
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 
 if __name__ == '__main__':
