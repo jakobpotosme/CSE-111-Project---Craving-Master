@@ -2,6 +2,7 @@ from flask import Flask, request, url_for, redirect
 from flask.templating import render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import current_user, login_user, LoginManager, UserMixin, logout_user, login_required
+from sqlalchemy.orm import backref
 
 
 app = Flask(__name__)
@@ -30,14 +31,109 @@ class Users(UserMixin, db.Model):
     age = db.Column(db.Integer, unique=False, nullable=False)
     city = db.Column(db.Integer, unique=False, nullable=False)
 
+    applicationConnect = db.relationship(
+        'Application', backref='users', lazy=True)
+
     def check_password(self, password):
         return self.password == password
 
 
+class Favorites(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, unique=True, nullable=False)
+
+    applicationConnect = db.relationship(
+        'Application', backref='Favorites', lazy=True)
+
+
+class City(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, unique=True, nullable=False)
+
+    stateConnect = db.relationship('State', backref='City', lazy=True)
+
+
+class FastFood(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    city_id = db.Column(db.Integer, unique=True, nullable=False)
+    name = db.Column(db.String, unique=True, nullable=False)
+    state_id = db.Column(db.Integer, unique=True, nullable=False)
+
+    connectFastFoodCity = db.relationship(
+        'FastFood_City', backref='FastFood', lazy=True)
+
+
+# many to many
+class FastFood_City(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    FastFood_id = db.Column(db.Integer, db.ForeignKey(
+        FastFood.id))
+    City_id = db.Column(db.Integer, db.ForeignKey(
+        City.id))
+
+
+class Restaurant(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    city_id = db.Column(db.Integer, unique=True, nullable=False)
+    name = db.Column(db.String, unique=True, nullable=False)
+    state_id = db.Column(db.Integer, unique=True, nullable=False)
+
+    connectRestaurantCity = db.relationship(
+        'Restaurant_City', backref='Restaurant', lazy=True)
+
+
+class Restaurant_City(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    Restaurant_id = db.Column(db.Integer, db.ForeignKey(
+        Restaurant.id))
+    City_id = db.Column(db.Integer, db.ForeignKey(
+        City.id))
+
+
+class StreetFood(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    city_id = db.Column(db.Integer, unique=True, nullable=False)
+    name = db.Column(db.String, unique=True, nullable=False)
+    state_id = db.Column(db.Integer, unique=True, nullable=False)
+
+    connectStreetFoodCity = db.relationship(
+        'StreetFood_City', backref='StreetFood', lazy=True)
+
+
+class StreetFood_City(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    StreetFood_id = db.Column(db.Integer, db.ForeignKey(
+        StreetFood.id))
+    City_id = db.Column(db.Integer, db.ForeignKey(
+        City.id))
+
+
+class State(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, unique=True, nullable=False)
+
+    city_name = db.Column(db.String, db.ForeignKey(
+        City.name), nullable=False)
+
+
+class Application(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_name = db.Column(db.String, db.ForeignKey(
+        Users.username), nullable=False)
+    # maybe allow user to have top 3 from favorites always displayed on homepage
+    favorites_name = db.Column(db.String, db.ForeignKey(
+        Favorites.name), nullable=False)
+
+    # maybe allow users to have favorites for different cities?
 db.create_all()
 # user = Consumer(name='john', phone='209-111-1234', age=23, citykey=2)
 # db.session.add(user)
 # db.session.commit()
+# fav = Favorites(name='FirstFavorite')
+
+# db.session.add(fav)
+# db.session.commit()
+# db.drop_all()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -90,6 +186,9 @@ def homepage():
 
 @app.route('/favorites', methods=['GET', 'POST'])
 def favorites():
+
+    favorites = Favorites.query.all()
+    print(favorites)
     return render_template('favorites.html')
 
 

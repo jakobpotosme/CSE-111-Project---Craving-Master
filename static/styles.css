@@ -300,6 +300,9 @@ input[type=text]:placeholder {
     grid-column: 1 / 3;
 }
 
+.city-input{
+    grid-row: auto;
+}
 #login-container {
     display: grid;
 }
