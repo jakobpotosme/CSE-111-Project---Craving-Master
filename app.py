@@ -3,6 +3,7 @@ from flask.templating import render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import current_user, login_user, LoginManager, UserMixin, logout_user, login_required
 from sqlalchemy.orm import backref
+from sqlalchemy.util.langhelpers import method_is_overridden
 
 
 app = Flask(__name__)
@@ -55,9 +56,9 @@ class City(UserMixin, db.Model):
 
 class FastFood(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    city_id = db.Column(db.Integer, unique=True, nullable=False)
+    city_id = db.Column(db.Integer, nullable=False)
     name = db.Column(db.String, unique=True, nullable=False)
-    state_id = db.Column(db.Integer, unique=True, nullable=False)
+    state_id = db.Column(db.Integer, nullable=False)
 
     connectFastFoodCity = db.relationship(
         'FastFood_City', backref='FastFood', lazy=True)
@@ -74,9 +75,9 @@ class FastFood_City(UserMixin, db.Model):
 
 class Restaurant(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    city_id = db.Column(db.Integer, unique=True, nullable=False)
+    city_id = db.Column(db.Integer, unique=False, nullable=False)
     name = db.Column(db.String, unique=True, nullable=False)
-    state_id = db.Column(db.Integer, unique=True, nullable=False)
+    state_id = db.Column(db.Integer, unique=False, nullable=False)
 
     connectRestaurantCity = db.relationship(
         'Restaurant_City', backref='Restaurant', lazy=True)
@@ -92,9 +93,9 @@ class Restaurant_City(UserMixin, db.Model):
 
 class StreetFood(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    city_id = db.Column(db.Integer, unique=True, nullable=False)
+    city_id = db.Column(db.Integer, unique=False, nullable=False)
     name = db.Column(db.String, unique=True, nullable=False)
-    state_id = db.Column(db.Integer, unique=True, nullable=False)
+    state_id = db.Column(db.Integer, unique=False, nullable=False)
 
     connectStreetFoodCity = db.relationship(
         'StreetFood_City', backref='StreetFood', lazy=True)
@@ -124,8 +125,10 @@ class Application(UserMixin, db.Model):
     favorites_name = db.Column(db.String, db.ForeignKey(
         Favorites.name), nullable=False)
 
+
     # maybe allow users to have favorites for different cities?
 db.create_all()
+
 # user = Consumer(name='john', phone='209-111-1234', age=23, citykey=2)
 # db.session.add(user)
 # db.session.commit()
@@ -134,6 +137,37 @@ db.create_all()
 # db.session.add(fav)
 # db.session.commit()
 # db.drop_all()
+
+# adding to fastfood
+# ff = FastFood(name="Wendy's", city_id=1, state_id=1)
+# ff = FastFood(name='Taco Bell', city_id=2, state_id=1)
+# ff = FastFood(name='Chick-fil-A', city_id=3, state_id=1)
+# ff = FastFood(name='Starbucks', city_id=4, state_id=1)
+# ff = FastFood(name="McDonald's", city_id=5, state_id=1)
+# db.session.add(ff)
+# FastFood.query.filter_by(name="Wendy'd").delete()
+
+
+# adding to restaurant
+# r = Restaurant(name="Applebee's", city_id=1, state_id=1)
+# r = Restaurant(name="Olive Garden", city_id=2, state_id=1)
+# r = Restaurant(name="Buffalo Wild Wings", city_id=3, state_id=1)
+# r = Restaurant(name="IHOP", city_id=4, state_id=1)
+# r = Restaurant(name="Red Lobster", city_id=5, state_id=1)
+# db.session.add(r)
+
+# adding streetfood
+# s = StreetFood(name="Soma Street Food Park", city_id=1, state_id=1)
+# s = StreetFood(name="El Fuego", city_id=2, state_id=1)
+# s = StreetFood(name="Korean Street Food", city_id=3, state_id=1)
+# s = StreetFood(name="Tacos Las Ranitas", city_id=4, state_id=1)
+# s = StreetFood(name="The Papaya Lady", city_id=5, state_id=1)
+
+# db.session.add(s)
+# FastFood.__table__.drop(db.engine)
+# Restaurant.__table__.drop(db.engine)
+# StreetFood.__table__.drop(db.engine)
+# db.session.commit()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -184,12 +218,66 @@ def homepage():
     return render_template('home.html')
 
 
+@app.route('/selection', methods=['GET', 'POST'])
+@login_required
+def selection():
+    input = request.form['city-input']
+    print(input)
+
+    joinedFastFoodResult = []
+    for c, ff in db.session.query(City, FastFood).filter(
+            City.name == input).filter(City.id == FastFood.city_id).all():
+        joinedFastFoodResult.append(ff.name)
+
+    joinedStreetFoodResult = []
+    for c, s in db.session.query(City, StreetFood).filter(
+            City.name == input).filter(City.id == StreetFood.city_id).all():
+        joinedStreetFoodResult.append(s.name)
+
+    joinedRestaurantResult = []
+    for c, r in db.session.query(City, Restaurant).filter(
+            City.name == input).filter(City.id == Restaurant.city_id).all():
+        joinedRestaurantResult.append(r.name)
+    print(joinedRestaurantResult)
+    return render_template('selection.html', FastFood=joinedFastFoodResult, StreetFood=joinedStreetFoodResult, Restaurant=joinedRestaurantResult)
+
+
+@app.route('/fastfood', methods=['GET', 'POST'])
+@login_required
+def fastfood():
+    fastfoodInfo = request.form['ff-btn']
+    print(fastfoodInfo)
+    return render_template('fastfood.html', fastfood=fastfoodInfo)
+
+
+@app.route('/streetfood', methods=['GET', 'POST'])
+@login_required
+def streetfood():
+    streetfoodInfo = request.form['s-btn']
+    print(streetfoodInfo)
+    return render_template('streetfood.html', streetfood=streetfoodInfo)
+
+
+@app.route('/restaurant', methods=['GET', 'POST'])
+@login_required
+def restaurant():
+    restaurantInfo = request.form['r-btn']
+    print(restaurantInfo)
+    return render_template('restaurant.html', restaurant=restaurantInfo)
+
+
 @app.route('/favorites', methods=['GET', 'POST'])
 def favorites():
 
+    # maybe add a column to favorites where indicates top 3 or just list them all
+    # with details
     favorites = Favorites.query.all()
+    fastfood = FastFood.query.all()
+    restaurant = Restaurant.query.all()
+    streetfood = StreetFood.query.all()
+
     print(favorites)
-    return render_template('favorites.html')
+    return render_template('favorites.html', favorites=favorites, fastfood=fastfood, restaurant=restaurant, streetfood=streetfood)
 
 
 @app.route('/list', methods=['GET', 'POST'])
