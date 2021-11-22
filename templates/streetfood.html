@@ -14,8 +14,22 @@
 
 <body>
     <div class="wrapper">
+        <form action="/addfavorite" method="post">
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Favorite?</th>
+                </tr>
+                {%for i in streetfood%}
+                <tr>
+                    <td>{{i}}</td>
+                    <input type="hidden" value="s" name="type">
+                    <td><button type="submit" value="{{i}}" name="edit">Favorite</button></td>
+                </tr>
+                {%endfor%}
+            </table>
+        </form>
 
-        <h1>{{streetfood}} </h1>
 
     </div>
 </body>

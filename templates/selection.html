@@ -22,7 +22,8 @@
                     <tr>{{i}}</tr>
                 </table>
                 {%endfor%} -->
-                <button type="submit" value="{{FastFood}}" name="ff-btn">Fast food</button>
+                <input type="hidden" value="{{City}}" name="city">
+                <button type="submit" value="Fastfood" name="ff-btn">Fast food</button>
             </form>
 
         </div>
@@ -33,7 +34,8 @@
                     <tr>{{i}}</tr>
                 </table>
                 {%endfor%} -->
-                <button type="submit" value="{{StreetFood}}" name="s-btn">Street Food</button>
+                <input type="hidden" value="{{City}}" name="city">
+                <button type="submit" value="StreetFood" name="s-btn">Street Food</button>
             </form>
 
         </div>
@@ -45,6 +47,7 @@
                     <tr>{{i}}</tr>
                 </table>
                 {%endfor%} -->
+                <input type="hidden" value="{{City}}" name="city">
                 <button type="submit" value="{{Restaurant}}" name="r-btn">Restaurant</button>
             </form>
 

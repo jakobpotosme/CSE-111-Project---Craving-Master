@@ -41,18 +41,61 @@
     <h1>FAVORITES WILL BE DISPLAYED HERE AND USER CAN EDIT/UPDATE</h1>
 
     <div class="wrapper">
-        <h1>Current Favorites list</h1>
+        <!-- <h1>Current Favorites list</h1>
         {%for i in favorites%}
         <h2>{{i.name}} </h2>
-        {%endfor%}
+        {%endfor%} -->
+
+        <table>
+            <tr>
+                <th>Fast Food Favorites</th>
+            </tr>
+            <tr>
+                <th>Name</th>
+            </tr>
+            {% for i in fastFavs%}
+            <tr>
+                <td>{{i.name}}</td>
+            </tr>
+            {%endfor%}
+        </table>
+
+        <table>
+            <tr>
+                <th>Restaurant Favorites</th>
+            </tr>
+            <tr>
+                <th>Name</th>
+            </tr>
+            {% for i in restFavs%}
+            <tr>
+                <td>{{i.name}}</td>
+            </tr>
+            {%endfor%}
+        </table>
+
+        <table>
+            <tr>
+                <th>Streetfood Favorites</th>
+            </tr>
+            <tr>
+                <th>Name</th>
+            </tr>
+            {% for i in streetFavs%}
+            <tr>
+                <td>{{i.name}}</td>
+            </tr>
+            {%endfor%}
+        </table>
+
         <br>
         <br>
         <h1>Update your favorites</h1>
         <form id="editFastFoodForm">
 
-            <h2>Edit Favorite FastFood</h2>
+            <h2>Remove Favorite FastFood</h2>
             <select>
-                {%for i in fastfood %}
+                {%for i in fastFavs %}
                 <option>{{i.name}}</option>
                 {%endfor%}
             </select>
@@ -60,9 +103,9 @@
         </form>
         <form id="editRestaurantForm">
 
-            <h2>Edit Favorite Restaurant</h2>
+            <h2>Remove Favorite Restaurant</h2>
             <select>
-                {%for i in restaurant %}
+                {%for i in restFavs %}
                 <option>{{i.name}}</option>
                 {%endfor%}
             </select>
@@ -70,9 +113,9 @@
         </form>
         <form id="editStreetFoodForm">
 
-            <h2>Edit Favorite StreetFoo</h2>
+            <h2>Remove Favorite StreetFoo</h2>
             <select>
-                {%for i in streetfood %}
+                {%for i in streetFavs %}
                 <option>{{i.name}}</option>
                 {%endfor%}
             </select>
