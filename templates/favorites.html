@@ -91,35 +91,42 @@
         <br>
         <br>
         <h1>Update your favorites</h1>
-        <form id="editFastFoodForm">
+        <form action="/deleteFavorite" id="editFastFoodForm" method="post">
 
             <h2>Remove Favorite FastFood</h2>
+            {%for i in fastFavs %}
             <select>
-                {%for i in fastFavs %}
+
                 <option>{{i.name}}</option>
-                {%endfor%}
+
             </select>
-            <button type="submit">Edit</button>
+            <button type="submit" value="{{i.name}}" name="delete-btn">Delete</button>
+            {%endfor%}
         </form>
-        <form id="editRestaurantForm">
+        <form id="editRestaurantForm" action="/deleteFavorite" method="post">
 
             <h2>Remove Favorite Restaurant</h2>
+            {%for i in restFavs %}
             <select>
-                {%for i in restFavs %}
-                <option>{{i.name}}</option>
-                {%endfor%}
-            </select>
-            <button type="submit">Edit</button>
-        </form>
-        <form id="editStreetFoodForm">
 
-            <h2>Remove Favorite StreetFoo</h2>
-            <select>
-                {%for i in streetFavs %}
                 <option>{{i.name}}</option>
-                {%endfor%}
+
             </select>
-            <button type="submit">Edit</button>
+            <button type="submit" value="{{i.name}}" name="delete-btn">Delete</button>
+            {%endfor%}
+        </form>
+        <form id="editStreetFoodForm" action="/deleteFavorite" method="post">
+
+            <h2>Remove Favorite StreetFood</h2>
+            {%for i in streetFavs %}
+            <select>
+
+                <option>{{i.name}}</option>
+
+            </select>
+            <button type="submit" value="{{i.name}}" name="delete-btn">Delete</button>
+            {%endfor%}
+
         </form>
     </div>
 
