@@ -21,8 +21,8 @@
         <form action="/selection" method="post">
             {%for i in cuisines%}
             <input type="hidden" value="{{city}}" name="city">
-            <button value="{{i.cuisine}}" name="cuisine-btn"
-                class="btn btn-primary btn-lg btn-block">{{i.cuisine}}</button>
+            <button value="{{i.cuisine_name}}" name="cuisine-btn"
+                class="btn btn-primary btn-lg btn-block">{{i.cuisine_name}}</button>
             {%endfor%}
         </form>
 

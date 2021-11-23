@@ -58,6 +58,8 @@ class City(UserMixin, db.Model):
     name = db.Column(db.String, unique=True, nullable=False)
 
     stateConnect = db.relationship('State', backref='City', lazy=True)
+    CityCuisineConnect = db.relationship(
+        'City_Cuisines', backref='City', lazy=True)
 
 
 class FastFood(UserMixin, db.Model):
@@ -70,6 +72,10 @@ class FastFood(UserMixin, db.Model):
 
     connectFastFoodCity = db.relationship(
         'FastFood_City', backref='FastFood', lazy=True)
+
+    connectFastFoodCuisine = db.relationship(
+        'FastFood_Cuisine', backref='FastFood', lazy=True)
+
     # one to many, fastfood can have many cuisines
     # connectCuisines = db.relationship('Cuisines')
 
@@ -127,7 +133,24 @@ class Cuisines(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cuisine = db.Column(db.String, nullable=False)
 
-    # FFcuisine_type = db.Column(db.String, db.ForeignKey(FastFood.cuisine))
+    connectCityCuisine = db.relationship(
+        'City_Cuisines', backref='Cuisines', lazy=True)
+
+# many to many
+
+
+class City_Cuisines(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    city_name = db.Column(db.String, db.ForeignKey(City.name))
+    cuisine_name = db.Column(db.String, db.ForeignKey(Cuisines.cuisine))
+
+
+class FastFood_Cuisine(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    ff_cuisine = db.Column(db.Integer, db.ForeignKey(
+        FastFood.cuisine))
+    c_cuisine = db.Column(db.Integer, db.ForeignKey(
+        Cuisines.cuisine))
 
 
 class State(UserMixin, db.Model):
@@ -180,6 +203,31 @@ class Application(UserMixin, db.Model):
 #               state_id=1, cuisine='Japanese', type='ff')
 # ff = FastFood(name="Luu's Chicken", city_id=2,
 #               state_id=1, cuisine='Japanese', type='ff')
+
+# ff = db.session()
+# objects = [
+#     FastFood_Cuisine(ff_cuisine='American', c_cuisine='American'),
+#     FastFood_Cuisine(ff_cuisine='Mexican', c_cuisine='Mexican'),
+#     FastFood_Cuisine(ff_cuisine='Japanese', c_cuisine='Japanese')
+# ]
+# ff.bulk_save_objects(objects)
+# db.session.commit()
+
+# add to City_Cuisines
+# cc = db.session()
+# objects = [
+#     City_Cuisines(city_name='San Francisco', cuisine_name='American'),
+#     City_Cuisines(city_name='San Francisco', cuisine_name='Mexican'),
+#     City_Cuisines(city_name='Merced', cuisine_name='Mexican'),
+#     City_Cuisines(city_name='Merced', cuisine_name='Japanese'),
+#     City_Cuisines(city_name='Stockton', cuisine_name='American'),
+#     City_Cuisines(city_name='Sacramento', cuisine_name='American'),
+#     City_Cuisines(city_name='Sacramento', cuisine_name='Mexican'),
+#     City_Cuisines(city_name='Los Angelas', cuisine_name='American')
+
+# ]
+# cc.bulk_save_objects(objects)
+# db.session.commit()
 
 # db.session.add(ff)
 # db.session.commit()
@@ -249,6 +297,8 @@ class Application(UserMixin, db.Model):
 # StreetFood.__table__.drop(db.engine)
 # Favorites.__table__.drop(db.engine)
 # Cuisines.__table__.drop(db.engine)
+# FastFood_Cuisine.__table__.drop(db.engine)
+# City_Cuisines.__table__.drop(db.engine)
 # db.session.commit()
 
 
@@ -305,7 +355,8 @@ def homepage():
 def cuisines():
     input = request.form['city-input']
     print(input)
-    cuisines = Cuisines.query.all()
+    # cuisines = Cuisines.query.all()
+    cuisines = City_Cuisines.query.filter_by(city_name=input).all()
     print(cuisines)
     return render_template('cuisines.html', cuisines=cuisines, city=input)
 
@@ -318,8 +369,25 @@ def selection():
     cuisine = request.form['cuisine-btn']
     print(cuisine)
 
+    # move here to only display what is available if there is a cuisine with fastfood in that city
+    joinedFastFoodResult = []
+    for c, ff in db.session.query(City, FastFood).filter(
+            City.name == input).filter(City.id == FastFood.city_id).filter(FastFood.cuisine == cuisine).all():
+        joinedFastFoodResult.append(ff.name)
+
+    joinedStreetFoodResult = []
+    for c, s in db.session.query(City, StreetFood).filter(
+            City.name == input).filter(City.id == StreetFood.city_id).filter(StreetFood.cuisine == cuisine).all():
+        joinedStreetFoodResult.append(s.name)
+
+    joinedRestaurantResult = []
+    for c, r in db.session.query(City, Restaurant).filter(
+            City.name == input).filter(City.id == Restaurant.city_id).filter(Restaurant.cuisine == cuisine).all():
+        joinedRestaurantResult.append(r.name)
+
     # return render_template('selection.html', City=input, FastFood=joinedFastFoodResult, StreetFood=joinedStreetFoodResult, Restaurant=joinedRestaurantResult)
-    return render_template('selection.html', City=input, cuisine=cuisine)
+    return render_template('selection.html', City=input, cuisine=cuisine, fastfood=joinedFastFoodResult,
+                           streetfood=joinedStreetFoodResult, restaurant=joinedRestaurantResult)
 
 
 @app.route('/fastfood', methods=['GET', 'POST'])
