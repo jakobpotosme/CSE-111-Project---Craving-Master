@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div class="wrapper">
+    <div class="selection-wrapper">
         <div id="fastfood">
             <form action="/fastfood" method="post">
                 <!-- {% for i in FastFood%}
@@ -23,7 +23,8 @@
                 </table>
                 {%endfor%} -->
                 <input type="hidden" value="{{City}}" name="city">
-                <button type="submit" value="Fastfood" name="ff-btn">Fast food</button>
+                <button type="submit" value="Fastfood" name="ff-btn" class="btn btn-primary btn-lg btn-block">Fast
+                    food</button>
             </form>
 
         </div>
@@ -35,7 +36,8 @@
                 </table>
                 {%endfor%} -->
                 <input type="hidden" value="{{City}}" name="city">
-                <button type="submit" value="StreetFood" name="s-btn">Street Food</button>
+                <button type="submit" value="StreetFood" name="s-btn" class="btn btn-primary btn-lg btn-block">Street
+                    Food</button>
             </form>
 
         </div>
@@ -48,7 +50,8 @@
                 </table>
                 {%endfor%} -->
                 <input type="hidden" value="{{City}}" name="city">
-                <button type="submit" value="{{Restaurant}}" name="r-btn">Restaurant</button>
+                <button type="submit" value="{{Restaurant}}" name="r-btn"
+                    class="btn btn-primary btn-lg btn-block">Restaurant</button>
             </form>
 
         </div>

@@ -145,6 +145,7 @@ class Application(UserMixin, db.Model):
     favorites_name = db.Column(db.String, db.ForeignKey(
         Favorites.name), nullable=False)
 
+
     # maybe allow users to have favorites for different cities?
 db.create_all()
 
@@ -341,7 +342,7 @@ def edit():
 
 @app.route('/deleteFavorite', methods=['GET', 'POST'])
 def delete():
-    name = request.form['delete-btn']
+    name = request.form['selected_option']
     print(name)
     Favorites.query.filter_by(name=name).delete()
     db.session.commit()
@@ -351,7 +352,19 @@ def delete():
 
 @app.route('/list', methods=['GET', 'POST'])
 def list():
-    return render_template('list.html')
+
+    ffPlaces = FastFood.query.all()
+    sPlaces = StreetFood.query.all()
+    rPlaces = Restaurant.query.all()
+    print(ffPlaces)
+    return render_template('list.html', fastfood=ffPlaces, streetfood=sPlaces, restaurant=rPlaces)
+
+
+@app.route('/congrats', methods=['GET', 'POST'])
+def congrats():
+    selection = request.form['selected']
+
+    return render_template('congrats.html', selection=selection)
 
 
 @app.route('/logout', methods=['GET', 'POST'])

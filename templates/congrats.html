@@ -9,7 +9,7 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="..\static\styles.css">
-    <title>List</title>
+    <title>Document</title>
 </head>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid container">
@@ -38,40 +38,8 @@
 </nav>
 
 <body>
-    <!-- <h1>LIST OF AVAILABLE FOOD CHOICES WILL BE HERE </h1>
-    <p>or we can add this at the bottom of home page </p> -->
-
-    <div class="list-wrapper">
-        <table width="100" style="float:left;">
-            <tr>
-                <th>FastFood Locations</th>
-            </tr>
-            {%for i in fastfood%}
-            <tr>
-                <td>{{i.name}}</td>
-            </tr>
-            {%endfor%}
-        </table>
-        <table width="100" style="float:left;">
-            <tr>
-                <th>Restaurant Locations</th>
-            </tr>
-            {%for i in restaurant%}
-            <tr>
-                <td>{{i.name}}</td>
-            </tr>
-            {%endfor%}
-        </table>
-        <table width="100" style="float:left;">
-            <tr>
-                <th>StreetFood Locations</th>
-            </tr>
-            {%for i in streetfood%}
-            <tr>
-                <td>{{i.name}}</td>
-            </tr>
-            {%endfor%}
-        </table>
+    <div class="selection-wrapper">
+        <h1>Enjoy your meal at {{selection}}!</h1>
     </div>
 
 </body>

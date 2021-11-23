@@ -35,10 +35,36 @@ h2 {
     flex-direction: column;
     justify-content: center;
     width: 100%;
+    /* min-height: 100%; */
+    padding: 20px;
+}
+
+.selection-wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
     min-height: 100%;
     padding: 20px;
 }
 
+.list-wrapper{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    min-height: 100%;
+    padding: 20px;
+}
+.favorites-wrapper{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    
+}
 #formContent {
     -webkit-border-radius: 10px 10px 10px 10px;
     border-radius: 10px 10px 10px 10px;
@@ -307,3 +333,18 @@ input[type=text]:placeholder {
     display: grid;
 }
 
+table {
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+
+th {
+    color: white;
+}
+
+th,
+td {
+    width: 150px;
+    text-align: center;
+    padding: 5px;
+}
