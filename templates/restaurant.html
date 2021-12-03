@@ -15,21 +15,30 @@
 <body>
     <div class="selection-wrapper">
 
-        <form action='/addfavorite' method="post">
-            <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Favorite?</th>
-                </tr>
-                {%for i in restaurant%}
-                <tr>
-                    <td>{{i}}</td>
+
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Eat Here</th>
+                <th>Favorite</th>
+            </tr>
+            {%for i in restaurant%}
+            <tr>
+                <td>{{i}}</td>
+                <form action="/congrats" method="post">
+                    <input type="hidden" name="userId" value="{{userId}}">
+                    <td><button type="submit" value="{{i}}" name="selected">Yum</button></td>
+                </form>
+
+                <form action='/addfavorite' method="post">
                     <input type="hidden" value="r" name="type">
+                    <input type="hidden" name="userId" value="{{userId}}">
                     <td><button type="submit" value="{{i}}" name="edit">Favorite</button></td>
-                </tr>
-                {%endfor%}
-            </table>
-        </form>
+                </form>
+            </tr>
+            {%endfor%}
+        </table>
+
 
 
 

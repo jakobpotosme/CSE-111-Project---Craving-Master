@@ -18,6 +18,7 @@
         <div id="fastfood">
             {%if fastfood %}
             <form action="/fastfood" method="post">
+                <input type="hidden" name="userId" value="{{userId}}">
                 <input type="hidden" value="{{City}}" name="city">
                 <input type="hidden" value="{{cuisine}}" name="cuisine">
                 <button type="submit" value="Fastfood" name="ff-btn" class="btn btn-primary btn-lg btn-block">Fast
@@ -34,6 +35,7 @@
                     <tr>{{i}}</tr>
                 </table>
                 {%endfor%} -->
+                <input type="hidden" name="userId" value="{{userId}}">
                 <input type="hidden" value="{{City}}" name="city">
                 <input type="hidden" value="{{cuisine}}" name="cuisine">
                 <button type="submit" value="StreetFood" name="s-btn" class="btn btn-primary btn-lg btn-block">Street
@@ -50,6 +52,7 @@
                     <tr>{{i}}</tr>
                 </table>
                 {%endfor%} -->
+                <input type="hidden" name="userId" value="{{userId}}">
                 <input type="hidden" value="{{City}}" name="city">
                 <input type="hidden" value="{{cuisine}}" name="cuisine">
                 <button type="submit" value="{{Restaurant}}" name="r-btn"

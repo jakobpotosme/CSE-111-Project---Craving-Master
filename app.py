@@ -37,17 +37,23 @@ class Users(UserMixin, db.Model):
     applicationConnect = db.relationship(
         'Application', backref='users', lazy=True)
 
+    favoritesConnect = db.relationship('Favorites', backref='users', lazy=True)
+
     def check_password(self, password):
         return self.password == password
 
 
 class Favorites(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, unique=True, nullable=False)
+    name = db.Column(db.String, unique=False, nullable=False)
     type = db.Column(db.String, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        Users.id), nullable=False)
 
     applicationConnect = db.relationship(
         'Application', backref='Favorites', lazy=True)
+
+    userConnect = db.relationship('Users', backref='Favorites', lazy=True)
     # connectFavoriteFastFood = db.relationship(
     #     'Favorites', backref='Favorites', lazy=True
     # )
@@ -169,8 +175,9 @@ class Application(UserMixin, db.Model):
     favorites_name = db.Column(db.String, db.ForeignKey(
         Favorites.name), nullable=False)
 
+
     # maybe allow users to have favorites for different cities?
-# db.create_all()
+db.create_all()
 
 # user = Consumer(name='john', phone='209-111-1234', age=23, citykey=2)
 # db.session.add(user)
@@ -320,7 +327,7 @@ def login():
             return redirect(url_for('login'))
         else:
             login_user(user)
-            return redirect(url_for('homepage'))
+            return redirect(url_for('homepage', userId=user.id))
 
     return render_template('login.html')
 
@@ -343,11 +350,11 @@ def register():
     return 'success: Registration Success!'
 
 
-@app.route('/home', methods=['GET', 'POST'])
+@app.route('/home/<int:userId>', methods=['GET', 'POST'])
 @login_required
-def homepage():
+def homepage(userId):
 
-    return render_template('home.html')
+    return render_template('home.html', userId=userId)
 
 
 @app.route('/cuisine', methods=['GET', 'POST'])
@@ -355,10 +362,12 @@ def homepage():
 def cuisines():
     input = request.form['city-input']
     print(input)
+    userId = request.form['userId']
+    print(userId)
     # cuisines = Cuisines.query.all()
     cuisines = City_Cuisines.query.filter_by(city_name=input).all()
     print(cuisines)
-    return render_template('cuisines.html', cuisines=cuisines, city=input)
+    return render_template('cuisines.html', cuisines=cuisines, city=input, userId=userId)
 
 
 @app.route('/selection', methods=['GET', 'POST'])
@@ -368,6 +377,8 @@ def selection():
     print(input)
     cuisine = request.form['cuisine-btn']
     print(cuisine)
+    userId = request.form['userId']
+    print(userId)
 
     # move here to only display what is available if there is a cuisine with fastfood in that city
     joinedFastFoodResult = []
@@ -387,7 +398,7 @@ def selection():
 
     # return render_template('selection.html', City=input, FastFood=joinedFastFoodResult, StreetFood=joinedStreetFoodResult, Restaurant=joinedRestaurantResult)
     return render_template('selection.html', City=input, cuisine=cuisine, fastfood=joinedFastFoodResult,
-                           streetfood=joinedStreetFoodResult, restaurant=joinedRestaurantResult)
+                           streetfood=joinedStreetFoodResult, restaurant=joinedRestaurantResult, userId=userId)
 
 
 @app.route('/fastfood', methods=['GET', 'POST'])
@@ -397,7 +408,9 @@ def fastfood():
     selectionType = request.form['ff-btn']
     city = request.form['city']
     cuisine = request.form['cuisine']
+    userId = request.form['userId']
 
+    print(userId)
     print(selectionType)
     print(city)
     joinedFastFoodResult = []
@@ -405,7 +418,7 @@ def fastfood():
             City.name == city).filter(City.id == FastFood.city_id).filter(FastFood.cuisine == cuisine).all():
         joinedFastFoodResult.append(ff.name)
 
-    return render_template('fastfood.html', fastfood=joinedFastFoodResult)
+    return render_template('fastfood.html', fastfood=joinedFastFoodResult, userId=userId)
 
 
 @app.route('/streetfood', methods=['GET', 'POST'])
@@ -414,14 +427,15 @@ def streetfood():
     streetfoodInfo = request.form['s-btn']
     city = request.form['city']
     cuisine = request.form['cuisine']
-
+    userId = request.form['userId']
+    print(userId)
     joinedStreetFoodResult = []
     for c, s in db.session.query(City, StreetFood).filter(
             City.name == city).filter(City.id == StreetFood.city_id).filter(StreetFood.cuisine == cuisine).all():
         joinedStreetFoodResult.append(s.name)
 
     print(streetfoodInfo)
-    return render_template('streetfood.html', streetfood=joinedStreetFoodResult)
+    return render_template('streetfood.html', streetfood=joinedStreetFoodResult, userId=userId)
 
 
 @app.route('/restaurant', methods=['GET', 'POST'])
@@ -430,30 +444,35 @@ def restaurant():
     restaurantInfo = request.form['r-btn']
     city = request.form['city']
     cuisine = request.form['cuisine']
+    userId = request.form['userId']
     print(restaurantInfo)
+    print(userId)
 
     joinedRestaurantResult = []
     for c, r in db.session.query(City, Restaurant).filter(
             City.name == city).filter(City.id == Restaurant.city_id).filter(Restaurant.cuisine == cuisine).all():
         joinedRestaurantResult.append(r.name)
 
-    return render_template('restaurant.html', restaurant=joinedRestaurantResult)
+    return render_template('restaurant.html', restaurant=joinedRestaurantResult, userId=userId)
 
 
-@app.route('/favorites', methods=['GET', 'POST'])
-def favorites():
+@app.route('/favorites/<int:userId>', methods=['GET', 'POST'])
+def favorites(userId):
 
     # maybe add a column to favorites where indicates top 3 or just list them all
     # with details
-
+    print(userId)
     favorites = Favorites.query.all()
-    fastfoodFavorites = Favorites.query.filter_by(type='ff').all()
-    restaurantFavorites = Favorites.query.filter_by(type='r').all()
-    streetfoodFavorites = Favorites.query.filter_by(type='s').all()
+    fastfoodFavorites = Favorites.query.filter_by(
+        type='ff').filter_by(user_id=userId).all()
+    restaurantFavorites = Favorites.query.filter_by(
+        type='r').filter_by(user_id=userId).all()
+    streetfoodFavorites = Favorites.query.filter_by(
+        type='s').filter_by(user_id=userId).all()
 
     print(favorites)
     return render_template('favorites.html', favorites=favorites, fastFavs=fastfoodFavorites,
-                           restFavs=restaurantFavorites, streetFavs=streetfoodFavorites)
+                           restFavs=restaurantFavorites, streetFavs=streetfoodFavorites, userId=userId)
 
 
 @app.route('/addfavorite', methods=['GET', 'POST'])
@@ -461,50 +480,54 @@ def edit():
     if request.method == 'POST':
 
         type = request.form['type']
+        userId = request.form['userId']
+
         if type == 'ff':
             name = request.form['edit']
-            newFavorite = Favorites(name=name, type=type)
+            newFavorite = Favorites(name=name, type=type, user_id=userId)
             db.session.add(newFavorite)
             db.session.commit()
         elif type == 's':
             name = request.form['edit']
-            newFavorite = Favorites(name=name, type=type)
+            newFavorite = Favorites(name=name, type=type, user_id=userId)
             db.session.add(newFavorite)
             db.session.commit()
         elif type == 'r':
             name = request.form['edit']
-            newFavorite = Favorites(name=name, type=type)
+            newFavorite = Favorites(name=name, type=type, user_id=userId)
             db.session.add(newFavorite)
             db.session.commit()
 
-    return redirect(url_for('favorites'))
+    return redirect(url_for('favorites', userId=userId))
 
 
 @app.route('/deleteFavorite', methods=['GET', 'POST'])
 def delete():
     name = request.form['selected_option']
+    userId = request.form['userId']
     print(name)
     Favorites.query.filter_by(name=name).delete()
     db.session.commit()
 
-    return redirect(url_for('favorites'))
+    return redirect(url_for('favorites', userId=userId))
 
 
-@app.route('/list', methods=['GET', 'POST'])
-def list():
+@app.route('/list/<int:userId>', methods=['GET', 'POST'])
+def list(userId):
 
     ffPlaces = FastFood.query.all()
     sPlaces = StreetFood.query.all()
     rPlaces = Restaurant.query.all()
     print(ffPlaces)
-    return render_template('list.html', fastfood=ffPlaces, streetfood=sPlaces, restaurant=rPlaces)
+    return render_template('list.html', fastfood=ffPlaces, streetfood=sPlaces, restaurant=rPlaces, userId=userId)
 
 
 @app.route('/congrats', methods=['GET', 'POST'])
 def congrats():
     selection = request.form['selected']
+    userId = request.form['userId']
 
-    return render_template('congrats.html', selection=selection)
+    return render_template('congrats.html', selection=selection, userId=userId)
 
 
 @app.route('/logout', methods=['GET', 'POST'])

@@ -23,13 +23,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/home/{{userId}}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/favorites">Favorites</a>
+                    <a class="nav-link" href="/favorites/{{userId}}">Favorites</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/list">List of Available Choices</a>
+                    <a class="nav-link" href="/list/{{userId}}">List of Available Choices</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/logout">Logout</a>
@@ -40,6 +40,7 @@
 </nav>
 
 <body>
+    <!-- <h1>{{userId}}</h1> -->
     <div class="wrapper">
         <h3>Your one stop shop to statisfy your craving!</h3>
         <!-- maybe have a revolving globe in background -->
@@ -53,6 +54,7 @@
                         <path
                             d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
                     </svg>
+                    <input type="hidden" name="userId" value="{{userId}}">
                     <input type="text" placeholder="current city" name="city-input">
                     <button type="submit">Enter</button>
                 </div>

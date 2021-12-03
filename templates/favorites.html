@@ -21,13 +21,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/home/{{userId}}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/favorites">Favorites</a>
+                    <a class="nav-link" href="/favorites/{{userId}}">Favorites</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/list">List of Available Choices</a>
+                    <a class="nav-link" href="/list/{{userId}}">List of Available Choices</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/logout">Logout</a>
@@ -98,7 +98,7 @@
                 <option value="{{i.name}}">{{i.name}}</option>
                 {%endfor%}
             </select>
-
+            <input type="hidden" name="userId" value="{{userId}}">
             <button type="submit" name="delete-btn">Delete</button>
 
         </form>
@@ -111,6 +111,7 @@
                 <option value="{{i.name}}">{{i.name}}</option>
                 {%endfor%}
             </select>
+            <input type="hidden" name="userId" value="{{userId}}">
             <button type="submit" name="delete-btn">Delete</button>
 
         </form>
@@ -123,6 +124,7 @@
                 <option value="{{i.name}}">{{i.name}}</option>
                 {%endfor%}
             </select>
+            <input type="hidden" name="userId" value="{{userId}}">
             <button type="submit" name="delete-btn">Delete</button>
 
 

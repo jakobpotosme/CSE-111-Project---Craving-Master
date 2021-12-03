@@ -26,11 +26,13 @@
             <tr>
                 <td>{{i}}</td>
                 <form action="/congrats" method="post">
+                    <input type="hidden" name="userId" value="{{userId}}">
                     <td><button type="submit" value="{{i}}" name="selected">Yum</button></td>
                 </form>
 
                 <form action="/addfavorite" method="post">
                     <input type="hidden" value="ff" name="type">
+                    <input type="hidden" name="userId" value="{{userId}}">
                     <td><button type="submit" value="{{i}}" name="edit">Favorite</button></td>
                 </form>
             </tr>
