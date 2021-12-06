@@ -179,134 +179,263 @@ class Application(UserMixin, db.Model):
     # maybe allow users to have favorites for different cities?
 db.create_all()
 
-# user = Consumer(name='john', phone='209-111-1234', age=23, citykey=2)
-# db.session.add(user)
-# db.session.commit()
-# fav = Favorites(name='FirstFavorite')
+user = Consumer(name='john', phone='209-111-1234', age=23, citykey=2)
+db.session.add(user)
+db.session.commit()
+fav = Favorites(name='FirstFavorite')
 
-# db.session.add(fav)
-# db.session.commit()
-# db.drop_all()
+db.session.add(fav)
+db.session.commit()
+db.drop_all()
 
 
 # adding to fastfood
-# ff = FastFood(name="Wendy's", city_id=1, state_id=1,
-#               cuisine='American', type='ff')
-# ff = FastFood(name='Taco Bell', city_id=2, state_id=1,
-#               cuisine='Mexican', type='ff')
-# ff = FastFood(name='Chick-fil-A', city_id=3,
-#               state_id=1, cuisine='American', type='ff')
-# ff = FastFood(name='Starbucks', city_id=4, state_id=1,
-#               cuisine='American', type='ff')
-# ff = FastFood(name="McDonald's", city_id=5, state_id=1,
-#               cuisine='American', type='ff')
-# ff = FastFood(name="McDonald's", city_id=3, state_id=1,
-#               cuisine='American', type='ff')
-# ff = FastFood(name="El Pollo Loco", city_id=1,
-#               state_id=1, cuisine='Mexican', type='ff')
-# ff = FastFood(name="El Pollo Loco", city_id=4,
-#               state_id=1, cuisine='Mexican', type='ff')
-# ff = FastFood(name="Luu's Chicken", city_id=1,
-#               state_id=1, cuisine='Japanese', type='ff')
-# ff = FastFood(name="Luu's Chicken", city_id=2,
-#               state_id=1, cuisine='Japanese', type='ff')
+ff = FastFood(name="Wendy's", city_id=1, state_id=1,
+              cuisine='American', type='ff')
+ff = FastFood(name='Taco Bell', city_id=2, state_id=1,
+              cuisine='Mexican', type='ff')
+ff = FastFood(name='Chick-fil-A', city_id=3,
+              state_id=1, cuisine='American', type='ff')
+ff = FastFood(name='Starbucks', city_id=4, state_id=1,
+              cuisine='American', type='ff')
+ff = FastFood(name="McDonald's", city_id=5, state_id=1,
+              cuisine='American', type='ff')
+ff = FastFood(name="McDonald's", city_id=3, state_id=1,
+              cuisine='American', type='ff')
+ff = FastFood(name="El Pollo Loco", city_id=1,
+              state_id=1, cuisine='Mexican', type='ff')
+ff = FastFood(name="El Pollo Loco", city_id=4,
+              state_id=1, cuisine='Mexican', type='ff')
+ff = FastFood(name="Luu's Chicken", city_id=1,
+              state_id=1, cuisine='Japanese', type='ff')
+ff = FastFood(name="Luu's Chicken", city_id=2,
+              state_id=1, cuisine='Japanese', type='ff')
 
-# ff = db.session()
-# objects = [
-#     FastFood_Cuisine(ff_cuisine='American', c_cuisine='American'),
-#     FastFood_Cuisine(ff_cuisine='Mexican', c_cuisine='Mexican'),
-#     FastFood_Cuisine(ff_cuisine='Japanese', c_cuisine='Japanese')
-# ]
-# ff.bulk_save_objects(objects)
-# db.session.commit()
+ff = FastFood(name="In-n-Out", city_id=1,
+              state_id=1, cuisine='American', type='ff')
+ff = FastFood(name="Jack in the Box", city_id=1,
+              state_id=1, cuisine='American', type='ff')
+ff = FastFood(name="McDonald's", city_id=1,
+              state_id=1, cuisine='American', type='ff')
+ff = FastFood(name="Taco Bell", city_id=1,
+              state_id=1, cuisine='Mexican', type='ff')
+ff = FastFood(name="Pearl's Deluxe Burgers", city_id=1,
+              state_id=1, cuisine='American', type='ff')
+
+ff = FastFood(name="In-n-Out", city_id=2,
+              state_id=1, cuisine='American', type='ff')
+ff = FastFood(name="Jack in the Box", city_id=2,
+              state_id=1, cuisine='American', type='ff')
+ff = FastFood(name="McDonald's", city_id=2,
+              state_id=1, cuisine='American', type='ff')
+ff = FastFood(name="Taco Bell", city_id=2,
+              state_id=1, cuisine='Mexican', type='ff')
+
+ff = FastFood(name="In-n-Out", city_id=3,
+              state_id=1, cuisine='American', type='ff')
+ff = FastFood(name="Jack in the Box", city_id=3,
+              state_id=1, cuisine='American', type='ff')
+ff = FastFood(name="McDonald's", city_id=3,
+              state_id=1, cuisine='American', type='ff')
+ff = FastFood(name="Taco Bell", city_id=3,
+              state_id=1, cuisine='Mexican', type='ff')
+
+ff = FastFood(name="In-n-Out", city_id=4,
+              state_id=1, cuisine='American', type='ff')
+ff = FastFood(name="Jack in the Box", city_id=4,
+              state_id=1, cuisine='American', type='ff')
+ff = FastFood(name="McDonald's", city_id=4,
+              state_id=1, cuisine='American', type='ff')
+ff = FastFood(name="Taco Bell", city_id=4,
+              state_id=1, cuisine='Mexican', type='ff')
+
+ff = db.session()
+objects = [
+    FastFood_Cuisine(ff_cuisine='American', c_cuisine='American'),
+    FastFood_Cuisine(ff_cuisine='Mexican', c_cuisine='Mexican'),
+    FastFood_Cuisine(ff_cuisine='Japanese', c_cuisine='Japanese')
+]
+ff.bulk_save_objects(objects)
+db.session.commit()
 
 # add to City_Cuisines
-# cc = db.session()
-# objects = [
-#     City_Cuisines(city_name='San Francisco', cuisine_name='American'),
-#     City_Cuisines(city_name='San Francisco', cuisine_name='Mexican'),
-#     City_Cuisines(city_name='Merced', cuisine_name='Mexican'),
-#     City_Cuisines(city_name='Merced', cuisine_name='Japanese'),
-#     City_Cuisines(city_name='Stockton', cuisine_name='American'),
-#     City_Cuisines(city_name='Sacramento', cuisine_name='American'),
-#     City_Cuisines(city_name='Sacramento', cuisine_name='Mexican'),
-#     City_Cuisines(city_name='Los Angelas', cuisine_name='American')
+cc = db.session()
+objects = [
+    City_Cuisines(city_name='San Francisco', cuisine_name='American'),
+    City_Cuisines(city_name='San Francisco', cuisine_name='Mexican'),
+    City_Cuisines(city_name='Merced', cuisine_name='Mexican'),
+    City_Cuisines(city_name='Merced', cuisine_name='Japanese'),
+    City_Cuisines(city_name='Stockton', cuisine_name='American'),
+    City_Cuisines(city_name='Sacramento', cuisine_name='American'),
+    City_Cuisines(city_name='Sacramento', cuisine_name='Mexican'),
+    City_Cuisines(city_name='Los Angeles', cuisine_name='American')
 
-# ]
-# cc.bulk_save_objects(objects)
-# db.session.commit()
+]
+cc.bulk_save_objects(objects)
+db.session.commit()
 
-# db.session.add(ff)
-# db.session.commit()
-# FastFood.query.filter_by(name="Wendy'd").delete()
+db.session.add(ff)
+db.session.commit()
+FastFood.query.filter_by(name="Wendy'd").delete()
 
-# Favorites.query.filter_by(name="Buffalo Wild Wings").delete()
+Favorites.query.filter_by(name="Buffalo Wild Wings").delete()
 
 # adding to restaurant
-# r = Restaurant(name="Applebee's", city_id=1,
-#                state_id=1, cuisine='American', type='r')
-# r = Restaurant(name="Olive Garden", city_id=2,
-#                state_id=1, cuisine='Italian', type='r')
-# r = Restaurant(name="Tacos Chapala", city_id=2,
-#                state_id=1, cuisine='Mexican', type='r')
-# r = Restaurant(name="Buffalo Wild Wings", city_id=3,
-#                state_id=1, cuisine='American', type='r')
-# r = Restaurant(name="Nena's", city_id=3, state_id=1,
-#                cuisine='Mexican', type='r')
-# r = Restaurant(name="IHOP", city_id=4, state_id=1,
-#                cuisine='American', type='r')
-# r = Restaurant(name="Misaki Sushi & Bar", city_id=4,
-#                state_id=1, cuisine='Japanese', type='r')
-# r = Restaurant(name="Red Lobster", city_id=5,
-#                state_id=1, cuisine='American', type='r')
-# r = Restaurant(name="Toyo Sushi", city_id=5,
-#                state_id=1, cuisine='Japanese', type='r')
+r = Restaurant(name="Applebee's", city_id=1,
+               state_id=1, cuisine='American', type='r')
+r = Restaurant(name="Olive Garden", city_id=2,
+               state_id=1, cuisine='Italian', type='r')
+r = Restaurant(name="Tacos Chapala", city_id=2,
+               state_id=1, cuisine='Mexican', type='r')
+r = Restaurant(name="Buffalo Wild Wings", city_id=3,
+               state_id=1, cuisine='American', type='r')
+r = Restaurant(name="Nena's", city_id=3, state_id=1,
+               cuisine='Mexican', type='r')
+r = Restaurant(name="IHOP", city_id=4, state_id=1,
+               cuisine='American', type='r')
+r = Restaurant(name="Misaki Sushi & Bar", city_id=4,
+               state_id=1, cuisine='Japanese', type='r')
+r = Restaurant(name="Red Lobster", city_id=5,
+               state_id=1, cuisine='American', type='r')
+r = Restaurant(name="Toyo Sushi", city_id=5,
+               state_id=1, cuisine='Japanese', type='r')
 
-# db.session.add(r)
-# db.session.commit()
+r = Restaurant(name="Nopa", city_id=1,
+               state_id=1, cuisine='American', type='r')
+r = Restaurant(name="Californios", city_id=1,
+               state_id=1, cuisine='Mexican', type='r')
+r = Restaurant(name="Sotto Mare", city_id=1,
+               state_id=1, cuisine='Seafood', type='r')
+r = Restaurant(name="The Waterfront Restaurant", city_id=1,
+               state_id=1, cuisine='Seafood', type='r')
+
+r = Restaurant(name="Thai Cuisine II", city_id=2,
+               state_id=1, cuisine='Thai', type='r')
+r = Restaurant(name="Strings", city_id=2,
+               state_id=1, cuisine='Italian', type='r')
+r = Restaurant(name="Tumeric Indian Cuisine", city_id=2,
+               state_id=1, cuisine='Indian', type='r')
+r = Restaurant(name="Jantz Cafe and Bakery", city_id=2,
+               state_id=1, cuisine='American', type='r')
+r = Restaurant(name="Sushi Cuisine", city_id=2,
+               state_id=1, cuisine='Japanese', type='r')
+    
+r = Restaurant(name="Market Taverb", city_id=3,
+               state_id=1, cuisine='American', type='r')
+r = Restaurant(name="Dave Wong's Restaurant", city_id=3,
+               state_id=1, cuisine='Chinese', type='r')
+r = Restaurant(name="De Vega Brothers", city_id=3,
+               state_id=1, cuisine='Italian', type='r')
+r = Restaurant(name="Mezzo", city_id=3,
+               state_id=1, cuisine='Italian', type='r')
+
+r = Restaurant(name="Market Taverb", city_id=4,
+               state_id=1, cuisine='American', type='r')
+r = Restaurant(name="Dave Wong's Restaurant", city_id=4,
+               state_id=1, cuisine='Chinese', type='r')
+r = Restaurant(name="De Vega Brothers", city_id=4,
+               state_id=1, cuisine='Italian', type='r')
+r = Restaurant(name="Mezzo", city_id=4,
+               state_id=1, cuisine='Italian', type='r')
+
+r = Restaurant(name="Market Taverb", city_id=5,
+               state_id=1, cuisine='American', type='r')
+r = Restaurant(name="Dave Wong's Restaurant", city_id=5,
+               state_id=1, cuisine='Chinese', type='r')
+r = Restaurant(name="De Vega Brothers", city_id=5,
+               state_id=1, cuisine='Italian', type='r')
+r = Restaurant(name="Mezzo", city_id=5,
+               state_id=1, cuisine='Italian', type='r')
+db.session.add(r)
+db.session.commit()
 
 # adding streetfood
-# s = StreetFood(name="Soma Street Food Park", city_id=1,
-#                state_id=1, cuisine='American', type='s')
-# s = StreetFood(name="Yummy Sushi Burrito", city_id=1,
-#                state_id=1, cuisine='Japanese', type='s')
-# s = StreetFood(name="El Fuego", city_id=2, state_id=1,
-#                cuisine='Mexican', type='s')
-# s = StreetFood(name="Shirasoni", city_id=2, state_id=1,
-#                cuisine='Japanese', type='s')
-# s = StreetFood(name="Korean Street Food", city_id=3,
-#                state_id=1, cuisine='Korean', type='s')
-# s = StreetFood(name="Baked Mac", city_id=3, state_id=1,
-#                cuisine='American', type='s')
-# s = StreetFood(name="Tacos Las Ranitas", city_id=4,
-#                state_id=1, cuisine='Mexican', type='s')
-# s = StreetFood(name="The Boys", city_id=4, state_id=1,
-#                cuisine='American', type='s')
-# s = StreetFood(name="The Papaya Lady", city_id=5,
-#                state_id=1, cuisine='Thai', type='s')
-# s = StreetFood(name="Bonchon", city_id=5, state_id=1,
-#                cuisine='Korean', type='s')
-# db.session.add(s)
-# db.session.commit()
+s = StreetFood(name="Soma Street Food Park", city_id=1,
+               state_id=1, cuisine='American', type='s')
+s = StreetFood(name="Yummy Sushi Burrito", city_id=1,
+               state_id=1, cuisine='Japanese', type='s')
+s = StreetFood(name="El Fuego", city_id=2, state_id=1,
+               cuisine='Mexican', type='s')
+s = StreetFood(name="Shirasoni", city_id=2, state_id=1,
+               cuisine='Japanese', type='s')
+s = StreetFood(name="Korean Street Food", city_id=3,
+               state_id=1, cuisine='Korean', type='s')
+s = StreetFood(name="Baked Mac", city_id=3, state_id=1,
+               cuisine='American', type='s')
+s = StreetFood(name="Tacos Las Ranitas", city_id=4,
+               state_id=1, cuisine='Mexican', type='s')
+s = StreetFood(name="The Boys", city_id=4, state_id=1,
+               cuisine='American', type='s')
+s = StreetFood(name="The Papaya Lady", city_id=5,
+               state_id=1, cuisine='Thai', type='s')
+s = StreetFood(name="Bonchon", city_id=5, state_id=1,
+               cuisine='Korean', type='s')
+
+s = StreetFood(name="Aria Korean Street Food", city_id=1, state_id=1,
+               cuisine='Korean', type='s')
+s = StreetFood(name="Hippie Thai Street Food", city_id=1, state_id=1,
+               cuisine='Thai', type='s')
+s = StreetFood(name="The Dosa Brothers: Montgomery Street", city_id=1, state_id=1,
+               cuisine='Indian', type='s')
+s = StreetFood(name="Street Taco", city_id=1, state_id=1,
+               cuisine='Mexican', type='s')
+
+s = StreetFood(name="Box Thai Street Food", city_id=5, state_id=1,
+               cuisine='Thai', type='s')
+s = StreetFood(name="El Chato Taco Truck", city_id=5, state_id=1,
+               cuisine='Mexican', type='s')
+s = StreetFood(name="Issan Station Thai Street Food", city_id=5, state_id=1,
+               cuisine='Thai', type='s')
+s = StreetFood(name="Street Food of Seoul", city_id=5, state_id=1,
+               cuisine='Korean', type='s')
+s = StreetFood(name="Khaosan Thai Street Food", city_id=5, state_id=1,
+               cuisine='Thai', type='s')
+
+s = StreetFood(name="Curry Up Now", city_id=4, state_id=1,
+               cuisine='Indian', type='s')
+s = StreetFood(name="Kin Thai Street Eatery", city_id=4, state_id=1,
+               cuisine='Thai', type='s')
+s = StreetFood(name="Chando's Tacos", city_id=4, state_id=1,
+               cuisine='Mexican', type='s')
+s = StreetFood(name="Kaido", city_id=4, state_id=1,
+               cuisine='Thai', type='s')
+
+
+s = StreetFood(name="Curry Up Now", city_id=3, state_id=1,
+               cuisine='Indian', type='s')
+s = StreetFood(name="Kin Thai Street Eatery", city_id=3, state_id=1,
+               cuisine='Thai', type='s')
+s = StreetFood(name="Chando's Tacos", city_id=3, state_id=1,
+               cuisine='Mexican', type='s')
+s = StreetFood(name="Kaido", city_id=3, state_id=1,
+               cuisine='Thai', type='s')
+
+
+
+db.session.add(s)
+db.session.commit()
 
 # adding cuisines
-# c = Cuisines(cuisine='American')
-# c = Cuisines(cuisine='Mexican')
-# c = Cuisines(cuisine='Japanese')
-# c = Cuisines(cuisine='Italian')
-# c = Cuisines(cuisine='Korean')
-# c = Cuisines(cuisine='Thai')
-# db.session.add(c)
-# db.session.commit()
+c = Cuisines(cuisine='American')
+c = Cuisines(cuisine='Mexican')
+c = Cuisines(cuisine='Japanese')
+c = Cuisines(cuisine='Italian')
+c = Cuisines(cuisine='Korean')
+c = Cuisines(cuisine='Thai')
+c = Cuisines(cuisine='Indian')
+#  c = Cuisines(cuisine='Laotian')
+#  c = Cuisines(cuisine='Seafood')
+db.session.add(c)
+db.session.commit()
 
-# FastFood.__table__.drop(db.engine)
-# Restaurant.__table__.drop(db.engine)
-# StreetFood.__table__.drop(db.engine)
-# Favorites.__table__.drop(db.engine)
-# Cuisines.__table__.drop(db.engine)
-# FastFood_Cuisine.__table__.drop(db.engine)
-# City_Cuisines.__table__.drop(db.engine)
-# db.session.commit()
+FastFood.__table__.drop(db.engine)
+Restaurant.__table__.drop(db.engine)
+StreetFood.__table__.drop(db.engine)
+Favorites.__table__.drop(db.engine)
+Cuisines.__table__.drop(db.engine)
+FastFood_Cuisine.__table__.drop(db.engine)
+City_Cuisines.__table__.drop(db.engine)
+db.session.commit()
 
 
 @app.route('/', methods=['GET', 'POST'])
