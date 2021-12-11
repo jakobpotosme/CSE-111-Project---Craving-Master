@@ -1,4 +1,4 @@
-from os import close, error
+from os import close
 import sqlite3
 from sqlite3 import Error
 
@@ -256,9 +256,6 @@ def modifyFavoriteTable(_conn):
         _conn.rollback()
         print(e)
 
-# will be used to find the different food options within that city
-# right now it just get all the restaurants within each city
-
 
 def relevantCities(_conn):
     print("++++++++++++++++++++++++++++++++++")
@@ -277,7 +274,7 @@ def relevantCities(_conn):
         l = '{:<10} {:<10} {:<10} {:<10}\n'.format(
             "city", "fastfood", "restaurant", "streetfood")
         print(l)
-# test
+
         rows = cur.fetchall()
         for row in rows:
             l = '{:<10} {:<10} {:<10} {:<10}\n'.format(
@@ -288,37 +285,7 @@ def relevantCities(_conn):
         _conn.rollback()
         print(e)
 
-
-def userRegistration(_conn):
-    print("++++++++++++++++++++++++++++++++++")
-    print("User Registration")
-
-    try:
-        name = 'Testing'
-        phone = '209-111-1111'
-        age = 30
-        city = 2
-
-        sql = """
-            INSERT INTO Consumer(c_name,c_phone,c_age,c_citykey)
-            VALUES(?,?,?,?);
-
-        """
-
-        # sql = """
-        #     DELETE FROM Consumer WHERE c_name = 'Testing';
-
-        # """
-
-        args = [name, phone, age, city]
-        cur = _conn.cursor()
-        cur.execute(sql, args)
-        # cur.execute(sql)
-        _conn.commit()
-
-    except Error as e:
-        _conn.rollback()
-        print(e)
+# WIP
 
 
 def relevantEstablishments(_conn):
@@ -347,7 +314,6 @@ def relevantEstablishments(_conn):
         print(e)
 
 
-# similar to user registration but diff approach
 def userConInput(_conn):
     # INSERT INTO Consumer(c_name,c_phone,c_age,c_citykey)
     print("++++++++++++++++++++++++++++++++++")
@@ -375,79 +341,30 @@ def userConInput(_conn):
         _conn.rollback()
         print("consumer user input failed")
 
-
-# allow user to update their location
-def userCityInput(_conn):
-    #  INSERT INTO City(city_key,city_name,city_statekey)
-    print("++++++++++++++++++++++++++++++++++")
-    print("Gathering user input...")
-
-    # user will select from a drop down of cities available and that value will
-    # be passed here
-
-    selectedCitykey = 4
-
-    try:
-        sql = """
-            UPDATE Consumer
-            set c_citykey = C.city_key
-            FROM(SELECT city_key 
-                FROM City
-                where city_key  = ?
-            ) as C
-            WHERE c_name = 'Henry'
-        """
-        args = [selectedCitykey]
-        cur = _conn.cursor()
-        cur.execute(sql, args)
-        _conn.commit()
-
-    except Error as e:
-        _conn.rollback()
-        print(e)
+# def userCityInput(_conn):
+#     #  INSERT INTO City(city_key,city_name,city_statekey)
+#     print("++++++++++++++++++++++++++++++++++")
+#     print("inputting data")
+#     try:
+#         cursor = _conn.cursor()
+#         f = open('userCityIn.txt','r')
 
 
 def estabSelect(_conn):
     print("++++++++++++++++++++++++++++++++++")
-    print("in estabSelect")
-
-    # user will be able to select from variety of choices in a city
-    # enter city
-
+    print("inputting data")
     try:
-
-        selctedCity = 2
+        cursor = _conn.cursor()
 
         sql = """
-            SELECT s_name,city_name,sf_name,r_name,ff_name
-            FROM City
-            INNER JOIN FastFood ON FastFood.ff_citykey = City.city_key
-            INNER JOIN Restaurant ON Restaurant.r_citykey = City.city_key
-            INNER JOIN StreetFood ON StreetFood.sf_citykey = City.city_key
-            INNER JOIN State ON State.s_statekey = City.city_statekey
-            WHERE city_key = ?
+        SELECT @place 
+        FROM Fastfood, Restaurant, Streetfood
+        WHERE @place LIKE sf_name
+        OR @place LIKE r_name
+        OR @place LIKE ff_name
         """
-        args = [selctedCity]
-        cur = _conn.cursor()
-        cur.execute(sql, args)
-
-        l = '{:<10} {:<10} {:<10} {:<10} {:<10}\n'.format("state", "city",
-                                                          "streetfood", "restaurant", "fastfood")
-        print(l)
-
-        rows = cur.fetchall()
-        for row in rows:
-            l = '{:<10} {:<10} {:<10} {:<10} {:<10}\n'.format(
-                row[0], row[1], row[2], row[3], row[4])
-            print(l)
-
-        # sql = """
-        # SELECT @place
-        # FROM Fastfood, Restaurant, Streetfood
-        # WHERE @place LIKE sf_name
-        # OR @place LIKE r_name
-        # OR @place LIKE ff_name
-        # """
+        cursor.execute(sql)
+        _conn.commit()
 
     except Error as e:
         _conn.rollback()
@@ -466,13 +383,7 @@ def main():
         populateTables(conn)
         # modifyFavoriteTable(conn)
         # relevantCities(conn)
-        # userRegistration(conn)
-        # userCityInput(conn)
-        # estabSelect(conn)
-
-        #
-        # relevantEstablishments(conn)
-        # userConInput(conn)
+        relevantEstablishments(conn)
 
     closeConnection(conn, _dbFile)
 

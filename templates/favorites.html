@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="..\static\styles.css">
+    <title>Favorites</title>
+</head>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid container">
+        <a class="navbar-brand" href="#">Craving Master</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/home/{{userId}}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/favorites/{{userId}}">Favorites</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/list/{{userId}}">List of Available Choices</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<body>
+    <h1 style="text-align: center;">Favorites!</h1>
+    <div class="favorites-wrapper">
+
+        <table>
+            <tr>
+                <th>Fast Food</th>
+            </tr>
+            <tr>
+                <th>Name</th>
+            </tr>
+            {% for i in fastFavs%}
+            <tr>
+                <td>{{i.name}}</td>
+            </tr>
+            {%endfor%}
+        </table>
+
+        <table>
+            <tr>
+                <th>Restaurant</th>
+            </tr>
+            <tr>
+                <th>Name</th>
+            </tr>
+            {% for i in restFavs%}
+            <tr>
+                <td>{{i.name}}</td>
+            </tr>
+            {%endfor%}
+        </table>
+
+        <table>
+            <tr>
+                <th>Streetfood</th>
+            </tr>
+            <tr>
+                <th>Name</th>
+            </tr>
+            {% for i in streetFavs%}
+            <tr>
+                <td>{{i.name}}</td>
+            </tr>
+            {%endfor%}
+        </table>
+
+    </div>
+
+    <br>
+    <br>
+    <div class="wrapper">
+        <h1>Update your favorites</h1>
+        <form action="/deleteFavorite" id="editFastFoodForm" method="post">
+
+            <h2>Remove Favorite FastFood</h2>
+
+            <select name="selected_option">
+                {%for i in fastFavs %}
+                <option value="{{i.name}}">{{i.name}}</option>
+                {%endfor%}
+            </select>
+            <input type="hidden" name="userId" value="{{userId}}">
+            <button type="submit" name="delete-btn">Delete</button>
+
+        </form>
+        <form id="editRestaurantForm" action="/deleteFavorite" method="post">
+
+            <h2>Remove Favorite Restaurant</h2>
+
+            <select name="selected_option">
+                {%for i in restFavs %}
+                <option value="{{i.name}}">{{i.name}}</option>
+                {%endfor%}
+            </select>
+            <input type="hidden" name="userId" value="{{userId}}">
+            <button type="submit" name="delete-btn">Delete</button>
+
+        </form>
+        <form id="editStreetFoodForm" action="/deleteFavorite" method="post">
+
+            <h2>Remove Favorite StreetFood</h2>
+
+            <select name="selected_option">
+                {%for i in streetFavs %}
+                <option value="{{i.name}}">{{i.name}}</option>
+                {%endfor%}
+            </select>
+            <input type="hidden" name="userId" value="{{userId}}">
+            <button type="submit" name="delete-btn">Delete</button>
+
+
+        </form>
+    </div>
+
+
+</body>
+
+</html>
